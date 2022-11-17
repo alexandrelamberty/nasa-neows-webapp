@@ -5,4 +5,4 @@ Web application consuming the [Asteroids - NeoWs API](https://data.nasa.gov/Spac
 ## References
 
 - <https://api.nasa.gov/#asteroids-neows>
-- <https://github.com/SpaceRocks/>git 
+- <https://github.com/SpaceRocks/>
