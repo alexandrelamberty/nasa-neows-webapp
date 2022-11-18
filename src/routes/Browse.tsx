@@ -5,11 +5,7 @@ import { useAxios } from "../hooks/useAxios";
 import { IBrowse } from "../interfaces/IBrowse";
 const Browse = () => {
   const [browse, setBrowse] = useState<IBrowse>();
-
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
   const [detailed, setDetailed] = useState<boolean>(false);
-
   const [page, setPage] = useState<number>(0);
   const [totalPages, setTotalPage] = useState<number>(0);
   const [totalElements, setTotalElements] = useState<number>(0);
@@ -21,9 +17,9 @@ const Browse = () => {
       accept: "*/*",
     },
     params: {
-      // page: startDate,
-      // size: endDate,
-      // detailed: detailed,
+      // page: page,
+      // size: ,
+      detailed: detailed,
     },
   });
 

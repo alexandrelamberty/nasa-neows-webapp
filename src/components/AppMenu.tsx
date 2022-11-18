@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Dropdown, Image, Input } from "semantic-ui-react";
+import {
+  AppContext,
+  AppContextDefaultValue,
+} from "../providers/AppContextProvider";
 
 const AppMenu = () => {
+  const { show, setShow } = useContext(AppContext);
+
   return (
     <Menu fixed="top">
-      <Menu.Item as="a" header>
+      <Menu.Item header>
         <Image
           size="mini"
           src="/logo192.png"
@@ -13,11 +19,12 @@ const AppMenu = () => {
         />
         NASA Near Earth Objects
       </Menu.Item>
+
       <Menu.Item
         name="feed"
         // active={activeItem === "editorials"}
       >
-        <Link to="/">Home</Link>
+        <Link to="/">Feed</Link>
       </Menu.Item>
 
       <Menu.Item
@@ -31,14 +38,12 @@ const AppMenu = () => {
         <Menu.Item>
           <Input icon="search" placeholder="Search..." />
         </Menu.Item>
-
-        <Dropdown pointing className="icon link item" icon="cog">
-          <Dropdown.Menu>
-            <Dropdown.Item>Settings</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item>About</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <Menu.Item
+          as="a"
+          name="API Key"
+          icon="key"
+          onClick={() => setShow(!show)}
+        />
       </Menu.Menu>
     </Menu>
   );

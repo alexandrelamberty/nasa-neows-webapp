@@ -2,6 +2,13 @@
 
 Web application consuming the [Asteroids - NeoWs API](https://data.nasa.gov/Space-Science/Asteroids-NeoWs-API/73uw-d9i8).
 
+## Features
+
+- [ ] Feed 
+- [ ] Browse catalog of NEOs.
+- [ ] Lookup an NEO
+- [ ] Custom API key
+
 ## References
 
 - <https://api.nasa.gov/#asteroids-neows>

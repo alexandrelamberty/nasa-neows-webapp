@@ -1,26 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AppContext } from "../providers/AppContextProvider";
 
 axios.defaults.baseURL = "https://api.nasa.gov/neo/rest/v1";
-axios.defaults.params = {
-  api_key: "DEMO_KEY",
-};
 
 export const useAxios = (params: AxiosRequestConfig) => {
+  const { apiKey } = useContext(AppContext);
   const [response, setResponse] = useState<AxiosResponse>();
   const [error, setError] = useState<AxiosError>();
   const [loading, setLoading] = useState(true);
 
   const fetchData = async (params: AxiosRequestConfig) => {
-    console.log(params);
+    console.log("useAxios", apiKey);
+    params.params.api_key = apiKey;
+    console.log("axios", params);
     try {
       const result = await axios.request(params);
-      console.log(result);
       setResponse(result);
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        setError(err);
         console.log(err);
+        setError(err);
       }
     } finally {
       setLoading(false);

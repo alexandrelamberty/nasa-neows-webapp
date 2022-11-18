@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
+import { ApiKeyModalForm } from "../components/ApiKey";
 import DateRangePicker from "../components/DateRangePicker";
 import FeedTable from "../components/FeedTable";
 import { useAxios } from "../hooks/useAxios";
-import { useDateAdd, useDateRange, useDateSubstract } from "../hooks/useDate";
+import { useDateAdd, useDateRange } from "../hooks/useDate";
 import { IFeed } from "../interfaces/IFeed";
-import { INeo } from "../interfaces/INeo";
-import NoMatch from "./NoMatch";
 
 const Feed = () => {
   const [neos, setNeos] = useState([]);
@@ -27,11 +26,7 @@ const Feed = () => {
     },
   });
 
-  useEffect(() => {}, [startDate]);
-
   useEffect(() => {
-    console.log("Response feed aggregation");
-    console.log(response);
     if (response) {
       if (response.data) {
         setFeed(response.data);
@@ -39,8 +34,10 @@ const Feed = () => {
         rangeDate.map((element) => {
           var date: string = String(element.toISOString().slice(0, 10));
           var data = feed?.near_earth_objects[date];
+          console.log(data);
           temp = temp.concat(data);
         });
+        console.log(temp);
         setNeos(temp);
       }
     }
