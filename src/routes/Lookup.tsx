@@ -25,14 +25,13 @@ const Lookup = () => {
 
   return (
     <div>
-      <h2>
-        Lookup <span style={{ color: "grey" }}>N.E.O ID {id}</span>
-      </h2>
-
       {loading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
       {!loading && !error && (
         <>
+          <h2>
+            Lookup <span style={{ color: "grey" }}>N.E.O ID {id}</span>
+          </h2>
           <LookupDetails data={lookup} />
         </>
       )}
