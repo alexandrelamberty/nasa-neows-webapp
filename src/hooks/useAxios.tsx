@@ -11,9 +11,8 @@ export const useAxios = (params: AxiosRequestConfig) => {
   const [loading, setLoading] = useState(true);
 
   const fetchData = async (params: AxiosRequestConfig) => {
-    console.log("useAxios", apiKey);
     params.params.api_key = apiKey;
-    console.log("axios", params);
+    console.log("useAxios", params);
     try {
       const result = await axios.request(params);
       setResponse(result);

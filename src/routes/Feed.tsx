@@ -28,17 +28,34 @@ const Feed = () => {
 
   useEffect(() => {
     if (response) {
+      console.log("response", response);
       if (response.data) {
-        setFeed(response.data);
+        console.log("useEffect::response.data");
+        // FIXME: Bug ???
+        var temp: any = [];
+        console.log(rangeDate.length);
+        for (var i: number = 0; i < rangeDate.length; i++) {
+          console.log("loop");
+          var date: string = String(rangeDate[i].toISOString().slice(0, 10));
+          console.log(date);
+          var data = response.data.near_earth_objects[date];
+          console.log("feed object date key", data);
+          temp = temp.concat(data);
+        }
+        setNeos(temp);
+        /*
+        
+         // Create an array concatenating all the k
         var temp: any = [];
         rangeDate.map((element) => {
           var date: string = String(element.toISOString().slice(0, 10));
+          console.log(date);
           var data = feed?.near_earth_objects[date];
-          console.log(data);
+          console.log("feed object date key", data);
           temp = temp.concat(data);
         });
-        console.log(temp);
         setNeos(temp);
+        */
       }
     }
   }, [response]);
