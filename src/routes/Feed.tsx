@@ -8,7 +8,7 @@ import { INeo } from "../interfaces/INeo";
 import NoMatch from "./NoMatch";
 
 const Feed = () => {
-  const [neos, setNeos] = useState<INeo[]>([]);
+  const [neos, setNeos] = useState([]);
   const [feed, setFeed] = useState<IFeed>();
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(useDateAdd(startDate, 7));
@@ -35,37 +35,34 @@ const Feed = () => {
     if (response) {
       if (response.data) {
         setFeed(response.data);
-        console.log("data", response.data);
-        // Group Neo dates object arrays into one
-        console.log("Loop ---");
         var temp: any = [];
         rangeDate.map((element) => {
           var date: string = String(element.toISOString().slice(0, 10));
           var data = feed?.near_earth_objects[date];
           temp = temp.concat(data);
-          console.log("data", data);
-          console.log("temp", temp);
         });
-        console.log("End ---");
         setNeos(temp);
-        console.log("neos", neos);
       }
     }
   }, [response]);
 
   return (
     <div>
-      <h2>
-        Feed{" "}
-        <span style={{ color: "grey" }}>
-          {String(startDate.toISOString().slice(0, 10))} -{" "}
-          {String(endDate.toISOString().slice(0, 10))}
-        </span>
-      </h2>
-      <DateRangePicker />
       {loading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
-      {!loading && !error && neos && <FeedTable data={neos} />}
+      {!loading && !error && (
+        <>
+          <h2>
+            Feed{" "}
+            <span style={{ color: "grey" }}>
+              {String(startDate.toISOString().slice(0, 10))} -{" "}
+              {String(endDate.toISOString().slice(0, 10))}
+            </span>
+          </h2>
+          <DateRangePicker />
+          <FeedTable data={neos} />
+        </>
+      )}
     </div>
   );
 };

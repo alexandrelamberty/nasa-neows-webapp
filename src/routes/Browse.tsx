@@ -43,17 +43,17 @@ const Browse = () => {
 
   return (
     <div>
-      <h2>
-        Browse{" "}
-        <span style={{ color: "grey" }}>
-          {page} of {totalPages} pages. There are {totalElements} records of
-          N.E.O.
-        </span>
-      </h2>
       {loading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
       {!loading && !error && (
         <>
+          <h2>
+            Browse{" "}
+            <span style={{ color: "grey" }}>
+              {page} of {totalPages} pages. There are {totalElements} records of
+              N.E.O.
+            </span>
+          </h2>
           <BrowseTable data={browse?.near_earth_objects} />
           <Pagination
             boundaryRange={0}
