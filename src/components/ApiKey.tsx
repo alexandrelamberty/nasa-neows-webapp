@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Form, Modal } from "semantic-ui-react";
+import { Button, Form, Icon, Modal } from "semantic-ui-react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { AppContext } from "../providers/AppContextProvider";
 
@@ -34,9 +34,6 @@ export const ApiKeyModalForm = () => {
     <Modal size="small" open={show} onClose={() => close()}>
       <Modal.Header>Use your API key</Modal.Header>
       <Modal.Content>
-        <p>
-          You can get a key at <a>https://api.nasa.gov/</a>
-        </p>
         <Form>
           <Form.Field>
             <label>API Key</label>
@@ -49,11 +46,27 @@ export const ApiKeyModalForm = () => {
             />
           </Form.Field>
         </Form>
+        <p style={{ textAlign: "right", paddingTop: "0.5em" }}>
+          <Icon disabled name="key" />
+          Get a key at{" "}
+          <a
+            href="https://api.nasa.gov/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://api.nasa.gov/
+          </a>
+        </p>
       </Modal.Content>
       <Modal.Content>
         <p>
-          Your API key is stored in your{" "}
-          <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">
+          <Icon disabled name="shield alternate" />
+          Your API key is stored in the{" "}
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             localStorage.
           </a>
         </p>

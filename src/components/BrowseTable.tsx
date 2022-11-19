@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import { Icon, Table } from "semantic-ui-react";
 import { INeo } from "../interfaces/INeo";
+import { lookupLink } from "./lookupLink";
+
 type Props = {
   data: INeo[] | undefined;
 };
-
-function lookupLink(asteroidId: string) {
-  return `/lookup/${asteroidId}/`;
-}
 
 const BrowseTable = ({ data }: Props) => (
   <Table celled structured selectable>

@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import { Icon, Table } from "semantic-ui-react";
 import { INeo } from "../interfaces/INeo";
+import { lookupLink } from "./lookupLink";
 
 type Props = {
   data: INeo[] | null;
@@ -9,7 +11,6 @@ const FeedTable = ({ data }: Props) => (
   <Table celled structured selectable>
     <Table.Header>
       <Table.Row>
-        <Table.HeaderCell rowSpan="3">ID</Table.HeaderCell>
         <Table.HeaderCell rowSpan="3">Name</Table.HeaderCell>
         <Table.HeaderCell rowSpan="3">Magnitude</Table.HeaderCell>
         <Table.HeaderCell colSpan="2">Estimated diameter</Table.HeaderCell>
@@ -37,8 +38,9 @@ const FeedTable = ({ data }: Props) => (
     <Table.Body>
       {data?.map((item: INeo) => (
         <Table.Row key={item.id}>
-          <Table.Cell>{item.id}</Table.Cell>
-          <Table.Cell>{item.name}</Table.Cell>
+          <Table.Cell>
+            <Link to={lookupLink(item.id)}>{item.name}</Link>
+          </Table.Cell>
           <Table.Cell>{item.absolute_magnitude_h}</Table.Cell>
           <Table.Cell>
             {item.estimated_diameter.kilometers.estimated_diameter_min}

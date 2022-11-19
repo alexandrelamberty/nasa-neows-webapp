@@ -1,5 +1,5 @@
 /** */
-export const useDateAdd = (date: Date, days: number): Date => {
+export const dateAdd = (date: Date, days: number): Date => {
   const currentDate = new Date(date);
   var index = 0;
   while (index < days) {
@@ -15,7 +15,7 @@ export const useDateAdd = (date: Date, days: number): Date => {
  * @param days 
  * @returns 
  */
-export const useDateSubstract = (date: Date, days: number): Date => {
+export const dateSubsract = (date: Date, days: number): Date => {
   const currentDate = new Date(date);
   var index = 0;
   while (index < days) {
@@ -32,7 +32,7 @@ export const useDateSubstract = (date: Date, days: number): Date => {
  * @param includeEndDate 
  * @returns An array of dates
  */
-export const useDateRange = (startDate: Date,
+export const dateRange = (startDate: Date,
   endDate: Date,
   includeEndDate?: boolean): Date[] => {
   const dates = [];

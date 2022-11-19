@@ -28,6 +28,8 @@ const Lookup = () => {
     <div>
       {loading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
+      {error?.response?.status == 404 && <p>Not found</p>}
+
       {!loading && !error && (
         <>
           <h2>

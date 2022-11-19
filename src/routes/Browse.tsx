@@ -1,30 +1,37 @@
 import { useEffect, useState } from "react";
-import { Pagination } from "semantic-ui-react";
+import { Pagination, PaginationProps } from "semantic-ui-react";
 import BrowseTable from "../components/BrowseTable";
 import { useAxios } from "../hooks/useAxios";
 import { IBrowse } from "../interfaces/IBrowse";
 const Browse = () => {
   const [browse, setBrowse] = useState<IBrowse>();
   const [detailed, setDetailed] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPage] = useState<number>(0);
   const [totalElements, setTotalElements] = useState<number>(0);
-
-  const { response, error, loading } = useAxios({
+  let query = {
     method: "GET",
     url: "/neo/browse",
-    headers: {
-      accept: "*/*",
-    },
     params: {
-      // page: page,
-      // size: ,
+      page: page,
       detailed: detailed,
     },
-  });
+  };
+  const { response, error, loading, fetchData } = useAxios(query);
+
+  const onPageChange = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    data: PaginationProps
+  ) => {
+    setPage((data.activePage as number) - 1);
+  };
 
   useEffect(() => {
-    if (response) {
+    fetchData(query);
+  }, [page]);
+
+  useEffect(() => {
+    if (response && response.data) {
       setBrowse(response.data);
     }
   }, [response]);
@@ -44,22 +51,20 @@ const Browse = () => {
       {!loading && !error && (
         <>
           <h2>
-            Browse{" "}
-            <span style={{ color: "grey" }}>
-              {page} of {totalPages} pages. There are {totalElements} records of
-              N.E.O.
-            </span>
+            Browse <span style={{ color: "grey" }}>Near Earth Objects</span>
           </h2>
-          <BrowseTable data={browse?.near_earth_objects} />
           <Pagination
-            boundaryRange={0}
+            activePage={page + 1}
             defaultActivePage={1}
-            ellipsisItem={null}
-            firstItem={null}
-            lastItem={null}
+            boundaryRange={1}
             siblingRange={1}
-            totalPages={totalPages}
+            showEllipsis={true}
+            showFirstAndLastNav={true}
+            showPreviousAndNextNav={true}
+            totalPages={totalPages - 1}
+            onPageChange={onPageChange}
           />
+          <BrowseTable data={browse?.near_earth_objects} />
         </>
       )}
     </div>

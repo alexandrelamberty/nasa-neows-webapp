@@ -1,14 +1,22 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import { Menu, Dropdown, Image, Input } from "semantic-ui-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, Dropdown, Image, Input, Form } from "semantic-ui-react";
 import {
   AppContext,
   AppContextDefaultValue,
 } from "../providers/AppContextProvider";
+import { lookupLink } from "./lookupLink";
 
 const AppMenu = () => {
+  const navigate = useNavigate();
   const { show, setShow } = useContext(AppContext);
+  // FIXME: Form validation, min char and number only? to chech...
+  const [search, setSearch] = useState<string>("");
 
+  const handleFormSubmit = () => {
+    if (search.length > 5) navigate(lookupLink(search));
+    // Maybe use Axios here and link only if found
+  };
   return (
     <Menu fixed="top">
       <Menu.Item header>
@@ -36,7 +44,14 @@ const AppMenu = () => {
 
       <Menu.Menu position="right">
         <Menu.Item>
-          <Input icon="search" placeholder="Search..." />
+          <Form onSubmit={handleFormSubmit}>
+            <Input
+              icon="search"
+              placeholder="Search by ID"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
+          </Form>
         </Menu.Item>
         <Menu.Item
           as="a"
