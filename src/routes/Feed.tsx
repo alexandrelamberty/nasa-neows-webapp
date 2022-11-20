@@ -5,7 +5,7 @@ import DateRangePicker from "../components/DateRangePicker";
 import FeedTable from "../components/FeedTable";
 import SectionHeader from "../components/SectionHeader";
 import { useAxios } from "../hooks/useAxios";
-import { dateAdd, dateRange } from "../hooks/useDate";
+import { dateAdd, dateRange, dateDateString } from "../hooks/useDate";
 import { IFeed } from "../interfaces/IFeed";
 import { AppContext } from "../providers/AppContextProvider";
 
@@ -33,7 +33,11 @@ const Feed = () => {
   const { response, error, loading, fetchData } = useAxios(query);
 
   const dateRangePickerChange = (startDate: Date, endDate: Date) => {
-    console.log("DataRangePickerChange", startDate, endDate);
+    console.log(
+      "DataRangePickerChange",
+      dateDateString(startDate),
+      dateDateString(endDate)
+    );
     setStartDate(startDate);
     setEndDate(endDate);
   };
@@ -50,7 +54,7 @@ const Feed = () => {
       console.log("1 - Response", response.data);
       var temp: any = [];
       for (var i: number = 0; i < rangeDate.length; i++) {
-        var date: string = String(rangeDate[i].toISOString().slice(0, 10));
+        var date: string = String(dateDateString(rangeDate[i]));
         var data = response.data.near_earth_objects[date];
         temp = temp.concat(data);
       }
@@ -63,9 +67,9 @@ const Feed = () => {
       <>
         <SectionHeader text="Feed" description="Close approaches">
           <DateRangePicker
-            startDate={startDate}
-            endDate={endDate}
-            maxRange={7}
+            start={startDate}
+            end={endDate}
+            range={7}
             onChange={dateRangePickerChange}
           />
         </SectionHeader>

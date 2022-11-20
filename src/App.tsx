@@ -10,6 +10,7 @@ import Browse from "./routes/Browse";
 import Feed from "./routes/Feed";
 import Lookup from "./routes/Lookup";
 import NoMatch from "./routes/NoMatch";
+import Playground from "./routes/Playground";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route index element={<Feed />} />
           <Route path="browse" element={<Browse />} />
           <Route path="lookup/:id" element={<Lookup />} />
+          <Route path="playground" element={<Playground />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>
