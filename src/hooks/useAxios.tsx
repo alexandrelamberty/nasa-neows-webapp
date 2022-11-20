@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AppContext } from "../providers/AppContextProvider";
 
-// axios.defaults.baseURL = "https://api.nasa.gov/neo/rest/v1";
+axios.defaults.baseURL = "https://api.nasa.gov/neo/rest/v1";
 
 export const useAxios = (params: AxiosRequestConfig) => {
   const [response, setResponse] = useState<AxiosResponse>();

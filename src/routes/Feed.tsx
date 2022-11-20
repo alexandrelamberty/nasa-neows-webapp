@@ -7,37 +7,32 @@ import SectionHeader from "../components/SectionHeader";
 import { useAxios } from "../hooks/useAxios";
 import { dateAdd, dateRange, dateDateString } from "../hooks/useDate";
 import { IFeed } from "../interfaces/IFeed";
+import { INeo } from "../interfaces/INeo";
 import { AppContext } from "../providers/AppContextProvider";
 
 const Feed = () => {
   // Query variables
   const { apiKey } = useContext(AppContext);
-  const [neos, setNeos] = useState([]);
-  const [detailed, setDetailed] = useState<boolean>(false);
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(dateAdd(startDate, 7));
-  // The ranges of dates to retrieve the feed neos dates keys.
-  const [rangeDate, setRangeDate] = useState<Date[]>(
-    dateRange(startDate, endDate, true)
-  );
+  const [neos, setNeos] = useState<INeo[]>();
+  const [feed, setFeed] = useState<IFeed>();
+  const [detailed, setDetailed] = useState<boolean>();
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+
+  // Query
   let query = {
     method: "GET",
     url: "/feed",
     params: {
       api_key: apiKey,
-      start_date: startDate.toISOString().slice(0, 10),
-      end_date: endDate.toISOString().slice(0, 10),
+      start_date: startDate?.toISOString().slice(0, 10),
+      end_date: endDate?.toISOString().slice(0, 10),
       detailed: detailed,
     },
   };
   const { response, error, loading, fetchData } = useAxios(query);
 
   const dateRangePickerChange = (startDate: Date, endDate: Date) => {
-    console.log(
-      "DataRangePickerChange",
-      dateDateString(startDate),
-      dateDateString(endDate)
-    );
     setStartDate(startDate);
     setEndDate(endDate);
   };
@@ -52,30 +47,31 @@ const Feed = () => {
   useEffect(() => {
     if (!loading && !error && response && response.data) {
       console.log("1 - Response", response.data);
-      var temp: any = [];
-      for (var i: number = 0; i < rangeDate.length; i++) {
-        var date: string = String(dateDateString(rangeDate[i]));
-        var data = response.data.near_earth_objects[date];
-        temp = temp.concat(data);
+      setFeed(response.data);
+      if (startDate && endDate && feed) {
+        var n: INeo[] = extractFeedRecord(feed);
+        setNeos(n);
       }
-      setNeos(temp);
     }
   }, [loading, response]);
+
+  const extractFeedRecord = (feed: IFeed): Array<INeo> => {
+    return Object.values(feed.near_earth_objects).flat(1);
+  };
 
   return (
     <div>
       <>
         <SectionHeader text="Feed" description="Close approaches">
           <DateRangePicker
-            start={startDate}
-            end={endDate}
+            start={new Date()}
             range={7}
             onChange={dateRangePickerChange}
           />
         </SectionHeader>
         {loading && <p>Loading...</p>}
         {error && <p>{error.message}</p>}
-        {/* {!loading && !error && <FeedTable data={neos} />} */}
+        {!loading && !error && neos && <FeedTable data={neos} />}
       </>
     </div>
   );

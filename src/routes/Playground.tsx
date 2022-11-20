@@ -1,42 +1,76 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import DateRangePicker from "../components/DateRangePicker";
-import { dateAdd, dateDateString } from "../hooks/useDate";
+
+// Ensure is valid date ?
+type DateString = string;
+
+type DatedRecord = Record<DateString, IRecord[]>;
+
+interface IFeed {
+  start: Date;
+  end: Date;
+  records: DatedRecord;
+}
+
+interface IRecord {
+  id: string;
+  date: Date;
+}
+
+const data: IFeed = {
+  start: new Date("2020-01-01"),
+  end: new Date("2020-01-02"),
+  records: {
+    // DatedRecord
+    "2020-01-01": [
+      // IRecord
+      { id: "1", date: new Date("2020-01-01") },
+      { id: "2", date: new Date("2020-01-01") },
+    ],
+    "2020-01-022": [
+      { id: "3", date: new Date("2020-01-02") },
+      { id: "4", date: new Date("2020-01-02") },
+    ],
+  },
+};
+
+const extractFeedRecords = (feed: IFeed): Array<IRecord> => {
+  return Object.values(feed.records).flat(1);
+};
+
+export const dateString = (date: Date): string => {
+  return date.toISOString().slice(0, 10);
+};
+
+type RecordListProps = {
+  records: Array<IRecord>;
+};
+
+function RecordList({ records }: RecordListProps) {
+  const listItems = records.map((record: IRecord) => (
+    <li key={record.id}>{record.date.toDateString()}</li>
+  ));
+  return <ul id="records">{listItems}</ul>;
+}
 
 const Playground = () => {
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
-
-  // Query
-  useEffect(() => {
-    if (startDate && endDate) {
-      console.log("-------- Query ----------");
-      console.log(startDate);
-      console.log(endDate);
-    }
-    // query with axios, ....
-    return () => {};
-  }, [startDate]);
+  const [feed] = useState<IFeed>(data);
+  const [records, setRecords] = useState<IRecord[]>();
 
   useEffect(() => {
-    console.log("Playground::initialize");
-  }, []);
+    console.log("feed", feed);
+    var feed_records: IRecord[] = extractFeedRecords(feed);
+    setRecords(feed_records);
+  }, [feed]);
 
-  // DateRangePicker change
-  const onDateRangePickerChange = (start: Date, end: Date) => {
-    console.log("DateRangePicker::onDateRangePickerChange");
-    console.log("start", start);
-    console.log("end", end);
-    setStartDate(start);
-    setEndDate(end);
-  };
+  useEffect(() => {
+    console.log("records", records);
+  }, [records]);
 
   return (
-    <DateRangePicker
-      start={startDate}
-      onChange={onDateRangePickerChange}
-      range={2}
-    />
+    <>
+      <p>Records</p>
+      {records && <RecordList records={records} />}
+    </>
   );
 };
 
