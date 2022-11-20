@@ -5,13 +5,11 @@ import { AppContext } from "../providers/AppContextProvider";
 axios.defaults.baseURL = "https://api.nasa.gov/neo/rest/v1";
 
 export const useAxios = (params: AxiosRequestConfig) => {
-  const { apiKey } = useContext(AppContext);
   const [response, setResponse] = useState<AxiosResponse>();
   const [error, setError] = useState<AxiosError>();
   const [loading, setLoading] = useState(true);
 
   const fetchData = async (params: AxiosRequestConfig) => {
-    params.params.api_key = apiKey;
     console.log("useAxios", params);
     try {
       const result = await axios.request(params);

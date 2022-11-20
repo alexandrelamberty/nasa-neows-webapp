@@ -1,4 +1,9 @@
-/** */
+/**
+ * 
+ * @param date 
+ * @param days 
+ * @returns 
+ */
 export const dateAdd = (date: Date, days: number): Date => {
   const currentDate = new Date(date);
   var index = 0;

@@ -1,12 +1,13 @@
 import { cleanup } from "@testing-library/react";
 import { useEffect, useState } from "react";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
+import { ItemGroup, Menu } from "semantic-ui-react";
 import { dateAdd, dateSubsract } from "../hooks/useDate";
 
 type DataRangePickerProps = {
   startDate?: Date;
   endDate?: Date;
-  maxRange: number;
+  maxRange?: number;
   onChange: (startDate: Date, endDate: Date) => void;
 };
 
@@ -24,13 +25,10 @@ type RequireIdOrToken =
 const DateRangePicker = ({
   startDate,
   endDate,
-  maxRange,
+  maxRange = 7,
   onChange,
 }: DataRangePickerProps) => {
-  const [start, setStart] = useState<Date>();
-  const [end, setEnd] = useState<Date>();
-
-  //
+  // FIXME: Bug with date rounding to revious day ?
   const onStartDateChange = (event: any, data: any): void => {
     console.log(data.value);
     var ed: Date = dateAdd(data.value, maxRange);
@@ -44,7 +42,7 @@ const DateRangePicker = ({
   };
 
   useEffect(() => {
-    console.log("DatePicker");
+    console.log("DatePicker", startDate, endDate);
   }, []);
 
   return (
@@ -53,11 +51,16 @@ const DateRangePicker = ({
         id="startDatePicker"
         date={startDate}
         onChange={onStartDateChange}
-      />
+        value={startDate}
+        clearable={false}
+      />{" "}
       <SemanticDatepicker
         id="endDatePicker"
         date={endDate}
+        value={endDate}
         onChange={onEndDateChange}
+        clearable={false}
+        pointing="right"
       />
     </div>
   );

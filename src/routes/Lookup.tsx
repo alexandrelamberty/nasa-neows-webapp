@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import LookupDetails from "../components/LookupDetails";
 import { useAxios } from "../hooks/useAxios";
 import { INeo } from "../interfaces/INeo";
+import { AppContext } from "../providers/AppContextProvider";
 
 const Lookup = () => {
   let { id } = useParams();
+  const { apiKey } = useContext(AppContext);
   const [lookup, setLookup] = useState<INeo | undefined>();
   const [detailed, setDetailed] = useState<boolean>(false);
-
   const { response, error, loading } = useAxios({
     method: "GET",
     url: "/neo/" + id,
@@ -16,7 +17,7 @@ const Lookup = () => {
       accept: "*/*",
     },
     params: {
-      // detailed: detailed,
+      api_key: apiKey,
     },
   });
 

@@ -7,7 +7,6 @@ import { AppContext } from "../providers/AppContextProvider";
  * @returns
  * @see https://usehooks.com/useLocalStorage/
  */
-
 export const useLocalStorage = (key: string, initialValue: string) => {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once

@@ -8,7 +8,7 @@ export interface INeo {
   name_limited?: string
   nasa_jpl_url: string;
   absolute_magnitude_h: number;
-  estimated_diameter: {
+  estimated_diameter?: {
     kilometers: IEstimatedDiameter;
     meters: IEstimatedDiameter;
     miles: IEstimatedDiameter;

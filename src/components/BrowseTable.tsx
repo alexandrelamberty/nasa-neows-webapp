@@ -43,14 +43,16 @@ const BrowseTable = ({ data }: Props) => (
           </Table.Cell>
           <Table.Cell>{item.absolute_magnitude_h}</Table.Cell>
           <Table.Cell>
-            {Math.round(
-              item.estimated_diameter.kilometers.estimated_diameter_min
-            )}
+            {item.estimated_diameter &&
+              Math.round(
+                item.estimated_diameter.kilometers.estimated_diameter_min
+              )}
           </Table.Cell>
           <Table.Cell>
-            {Math.round(
-              item.estimated_diameter.kilometers.estimated_diameter_max
-            )}
+            {item.estimated_diameter &&
+              Math.round(
+                item?.estimated_diameter.kilometers.estimated_diameter_max
+              )}
           </Table.Cell>
           <Table.Cell>
             {item.close_approach_data[0].close_approach_date}
