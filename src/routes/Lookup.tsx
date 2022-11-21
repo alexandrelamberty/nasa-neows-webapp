@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import LookupDetails from "../components/LookupDetails";
@@ -10,7 +11,9 @@ const Lookup = () => {
   const { apiKey } = useContext(AppContext);
   const [lookup, setLookup] = useState<INeo | undefined>();
   const [detailed, setDetailed] = useState<boolean>(false);
-  const { response, error, loading } = useAxios({
+
+  // Request
+  let requestConfig: AxiosRequestConfig = {
     method: "GET",
     url: "/neo/" + id,
     headers: {
@@ -19,18 +22,19 @@ const Lookup = () => {
     params: {
       api_key: apiKey,
     },
-  });
+  };
+
+  const { response, error, loading } = useAxios(requestConfig);
 
   useEffect(() => {
     if (response) setLookup(response.data);
   }, [response]);
 
   return (
-    <div>
+    <>
       {loading && <p>Loading...</p>}
       {error && <p>{error.message}</p>}
       {error?.response?.status == 404 && <p>Not found</p>}
-
       {!loading && !error && (
         <>
           <h2>
@@ -39,7 +43,7 @@ const Lookup = () => {
           <LookupDetails data={lookup} />
         </>
       )}
-    </div>
+    </>
   );
 };
 
