@@ -1,18 +1,62 @@
+import { useReducer } from "react";
 import { Link } from "react-router-dom";
 import { Icon, Table } from "semantic-ui-react";
 import { INeo } from "../interfaces/INeo";
 import { lookupLink } from "./lookupLink";
 
 type Props = {
-  data: INeo[] | null;
+  neos: INeo[] | null;
 };
 
-const FeedTable = ({ data }: Props) => {
+function exampleReducer(state: any, action: any) {
+  console.log("state", state);
+  console.log("action", action);
+  switch (action.type) {
+    case "CHANGE_SORT":
+      if (state.column === action.column) {
+        return {
+          ...state,
+          data: state.data.slice().reverse(),
+          direction:
+            state.direction === "ascending" ? "descending" : "ascending",
+        };
+      }
+
+      return {
+        column: action.column,
+        data: state.data,
+        direction: "ascending",
+      };
+
+    case "CLICK":
+      console.log("click");
+      return null;
+
+    default:
+      throw new Error();
+  }
+}
+
+const FeedTable = ({ neos }: Props) => {
+  const [state, dispatch] = useReducer(exampleReducer, {
+    column: null,
+    data: neos,
+    direction: null,
+  });
+
+  const { column, data, direction } = state;
+
   return (
-    <Table celled structured selectable>
+    <Table celled structured selectable striped sortable>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell rowSpan="3">Name</Table.HeaderCell>
+          <Table.HeaderCell
+            rowSpan="3"
+            sorted={column === "name" ? direction : null}
+            onClick={() => dispatch({ type: "CHANGE_SORT", column: "name" })}
+          >
+            Name
+          </Table.HeaderCell>
           <Table.HeaderCell rowSpan="3">Magnitude</Table.HeaderCell>
           <Table.HeaderCell colSpan="2">Estimated diameter</Table.HeaderCell>
           <Table.HeaderCell colSpan="6">Close Approach</Table.HeaderCell>
@@ -21,7 +65,13 @@ const FeedTable = ({ data }: Props) => {
         </Table.Row>
         <Table.Row>
           <Table.HeaderCell colSpan="2">Kilometers</Table.HeaderCell>
-          <Table.HeaderCell rowSpan="2">Date</Table.HeaderCell>
+          <Table.HeaderCell
+            rowSpan="2"
+            sorted={column === "date" ? direction : null}
+            onClick={() => dispatch({ type: "CHANGE_SORT", column: "date" })}
+          >
+            Date
+          </Table.HeaderCell>
           <Table.HeaderCell colSpan="2">Relative velocity</Table.HeaderCell>
           <Table.HeaderCell colSpan="3">Miss distance</Table.HeaderCell>
         </Table.Row>
@@ -38,7 +88,10 @@ const FeedTable = ({ data }: Props) => {
 
       <Table.Body>
         {data?.map((item: INeo) => (
-          <Table.Row key={item.id}>
+          <Table.Row
+            key={item.id}
+            onClick={() => dispatch({ type: "CLICK", column: "name" })}
+          >
             <Table.Cell>
               <Link to={lookupLink(item.id)}>{item.name}</Link>
             </Table.Cell>
