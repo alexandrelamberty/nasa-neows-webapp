@@ -1,6 +1,11 @@
 {
   "name": "neowa",
+  "description": "",
   "version": "0.1.0",
+  "keywords": [],
+  "license": "MIT",
+  "author": "Alexandre Lamberty <mail@alexandrelamberty.com>",
+  "homepage": "https://github.com/alexandrelamberty/neowa",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
